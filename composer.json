@@ -1,0 +1,17 @@
+{
+    "name": "vinter/bee",
+    "authors": [
+        {
+            "name": "Vinter",
+            "email": "wbmarsian@gmail.com"
+        }
+    ],
+    "require": {
+
+    },
+    "autoload": {
+      "psr-4": {
+        "Core\\": "Core/"
+      }
+    }
+}
