@@ -9,7 +9,8 @@
     "require": {
         "psr/http-message": "^1.0",
         "zendframework/zend-diactoros": "^1.7",
-        "phpunit/phpunit": "^6.5"
+        "phpunit/phpunit": "^6.5",
+        "twig/twig": "^2.4"
     },
     "autoload": {
       "psr-4": {

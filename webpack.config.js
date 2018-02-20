@@ -7,7 +7,7 @@ module.exports = {
     entry: './src/index.js',
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist/assert')
+        path: path.resolve(__dirname, 'App/Asserts')
     },
 
     plugins: [
