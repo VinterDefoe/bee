@@ -7,11 +7,18 @@
         }
     ],
     "require": {
-
+        "psr/http-message": "^1.0",
+        "zendframework/zend-diactoros": "^1.7",
+        "phpunit/phpunit": "^6.5"
     },
     "autoload": {
       "psr-4": {
-        "Core\\": "Core/"
+        "App\\": "App/",
+        "Core\\": "Core/",
+        "Tests\\": "Tests/"
       }
+    },
+    "scripts":{
+      "test": "phpunit --colors=always"
     }
 }

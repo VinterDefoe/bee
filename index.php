@@ -1,11 +1,29 @@
 <?php
 
-use Core\Http\Request;
+use Core\Router\Router;
+use Zend\Diactoros\Response\SapiEmitter;
+use Zend\Diactoros\ServerRequestFactory;
 
 require_once "vendor/autoload.php";
 
-$request = new Request();
-$request=$request->withQueryParams();
+#Init
+
+$request = ServerRequestFactory::fromGlobals();
+$router = new Router();
+$emitter = new SapiEmitter();
+
+#Route
 
 
-var_dump($request);
+
+#Actions
+
+#Sending
+
+
+
+
+
+
+
+
