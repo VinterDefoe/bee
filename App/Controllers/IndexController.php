@@ -25,4 +25,5 @@ class IndexController
         return new HtmlResponse($template);
     }
 
+
 }

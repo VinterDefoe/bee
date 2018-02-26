@@ -1,18 +1,21 @@
 <?php
 
 use App\Controllers\IndexController;
+use App\Middleware\MiddlewareOne;
+use App\Middleware\MiddlewareTwo;
 use App\Middleware\NotFoundPageMiddleware;
 use App\Middleware\TimerMiddleware;
 use Core\Container\Container;
-use Core\Middleware\Pipeline;
-use Core\Resolver;
-use Core\Router\Result;
+use Core\Middleware\Resolver;
+use Core\Pipeline\Pipeline;
 use Core\Router\Router;
-use Zend\Diactoros\Response;
+use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response\SapiEmitter;
 use Zend\Diactoros\ServerRequestFactory;
 
+
 require_once "vendor/autoload.php";
+
 
 #Init
 
@@ -20,7 +23,7 @@ $request = ServerRequestFactory::fromGlobals();
 $router = new Router();
 $resolver = new Resolver();
 $emitter = new SapiEmitter();
-
+$pipeline = new Pipeline();
 
 #Twig
 
@@ -32,48 +35,26 @@ $container = Container::getContainer();
 $container->add('twig', $twig);
 
 
-//$router->get('index','#^/$#',IndexController::class);
-//$router->get('index','#^/$#',function (ServerRequestInterface $request) use($twig,$pipeline){
-//    $pipeline->pipe(new TimerMiddleware());
-//    $pipeline->pipe(new IndexController($twig));
-//    $pipeline->pipe(new NotFoundPageMiddleware());
-//    return $pipeline($request);
-//});
-
-$router->get('index', '#^/$#', [
+$pipeline->pipe($resolver->resolve([
     TimerMiddleware::class,
-    IndexController::class,
-]);
-
-$pipeline = new Pipeline();
-#Actions
-
+    MiddlewareOne::class,
+    MiddlewareTwo::class
+]));
+$pipeline->pipe($resolver->resolve(MiddlewareOne::class));
+$pipeline->pipe($resolver->resolve(MiddlewareTwo::class));
+$pipeline->pipe($resolver->resolve(IndexController::class));
 
 /**
- * @var Result $result
+ * @var ResponseInterface $response
  */
-$result = $router->match($request);
-$pipeline->pipe($resolver->resolver($result->getHandler())) ;
-$pipeline->pipe($resolver->resolver(1)) ;
+$response = $pipeline($request, new NotFoundPageMiddleware());
 
-try{
-    $response = $pipeline($request);
-}catch (\Throwable $e){
-    echo $e->getMessage();
-}
+$res = new MiddlewareOne();
+echo $res->run();
 
+# Sending
 
-
-
-
-
-
-
-#Sending
-
-$emitter->emit($response);
-
-
+//$emitter->emit($response);
 
 
 
