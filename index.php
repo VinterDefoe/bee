@@ -49,12 +49,10 @@ $pipeline->pipe($resolver->resolve(IndexController::class));
  */
 $response = $pipeline($request, new NotFoundPageMiddleware());
 
-$res = new MiddlewareOne();
-echo $res->run();
 
 # Sending
 
-//$emitter->emit($response);
+$emitter->emit($response);
 
 
 
