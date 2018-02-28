@@ -1,13 +1,15 @@
 <?php
 
+use App\Controllers\BlogController;
 use App\Controllers\IndexController;
-use App\Middleware\MiddlewareOne;
-use App\Middleware\MiddlewareTwo;
+use App\Controllers\LoginController;
+use App\Middleware\CatcherErrorMiddleware;
 use App\Middleware\NotFoundPageMiddleware;
 use App\Middleware\TimerMiddleware;
+use Core\Application;
 use Core\Container\Container;
-use Core\Middleware\Resolver;
-use Core\Pipeline\Pipeline;
+use Core\Middleware\MiddlewareResolver;
+use Core\Router\RouteCollections;
 use Core\Router\Router;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response\SapiEmitter;
@@ -16,14 +18,18 @@ use Zend\Diactoros\ServerRequestFactory;
 
 require_once "vendor/autoload.php";
 
+#config
+
+$config = [
+    'users' => [['admin' => 'admin'], ['user' => 'user']]
+];
 
 #Init
-
 $request = ServerRequestFactory::fromGlobals();
-$router = new Router();
-$resolver = new Resolver();
+$resolver = new MiddlewareResolver();
 $emitter = new SapiEmitter();
-$pipeline = new Pipeline();
+$app = new Application($resolver, new NotFoundPageMiddleware());
+$routeCollections = new RouteCollections();
 
 #Twig
 
@@ -34,20 +40,30 @@ $twig = new Twig_Environment($loader);
 $container = Container::getContainer();
 $container->add('twig', $twig);
 
+#Routing
 
-$pipeline->pipe($resolver->resolve([
-    TimerMiddleware::class,
-    MiddlewareOne::class,
-    MiddlewareTwo::class
-]));
-$pipeline->pipe($resolver->resolve(MiddlewareOne::class));
-$pipeline->pipe($resolver->resolve(MiddlewareTwo::class));
-$pipeline->pipe($resolver->resolve(IndexController::class));
+$routeCollections->post('login','^/login/',LoginController::class);
+$routeCollections->get('blog','^/blog/{id}',BlogController::class,['id'=>'\d+']);
+$routeCollections->get('index','^/{id}',IndexController::class,['id'=>'\d+']);
+$routeCollections->get('index_list','^/',IndexController::class);
+
+$router = new Router($routeCollections);
+
+$app->pipe(CatcherErrorMiddleware::class);
+$app->pipe(TimerMiddleware::class);
+
+$result = $router->match($request);
+foreach ($result->getAttributes() as $name=>$value){
+    $request = $request->withAttribute($name,$value);
+
+}
+$app->pipe($result->getHandler());
+
 
 /**
  * @var ResponseInterface $response
  */
-$response = $pipeline($request, new NotFoundPageMiddleware());
+$response = $app->run($request);
 
 
 # Sending

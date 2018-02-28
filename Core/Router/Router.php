@@ -9,17 +9,17 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class Router
 {
-    private $routes = [];
+    private $routes;
 
-    public function __construct()
+    public function __construct(RouteCollections $routes)
     {
-
+        $this->routes= $routes;
     }
 
 
     public function match(ServerRequestInterface $request)
     {
-        foreach ($this->routes as $route){
+        foreach ($this->routes->routes as $route){
             /**
              * @var Route $route
              */

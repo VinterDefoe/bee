@@ -40,10 +40,18 @@ class Route
 
     public function match(ServerRequestInterface $request)
     {
-        if(!\in_array($request->getMethod(),$this->method)) return false;
+        if (!\in_array($request->getMethod(), $this->method)) return false;
 
-        if($match = preg_match($this->pattern,$request->getUri()->getPath(),$match)){
-            return new Result($this->name,$this->handler);
+        $pattern = preg_replace_callback('~\{([^\}]+)\}~', function ($matches) {
+            $argument = $matches[1];
+            $replace = $this->tokens[$argument] ?? '[^}]+';
+            return '(?P<' . $argument . '>' . $replace . ')';
+        }, $this->pattern);
+        if (preg_match('~^'.$pattern.'$~i', $request->getUri()->getPath(), $match)) {
+            return new Result(
+                $this->name,
+                $this->handler,
+                array_filter($match, '\is_string', ARRAY_FILTER_USE_KEY));
         }
         return false;
     }

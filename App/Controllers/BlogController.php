@@ -4,12 +4,25 @@
 namespace App\Controllers;
 
 
+use Core\Container\Container;
+use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
 
 class BlogController
 {
-    public function __invoke()
+    private $twig;
+
+    public function __construct()
     {
-        return new JsonResponse(['name' => 'John']);
+        $twig = Container::getContainer()->get('twig');
+        $this->twig = $twig;
+    }
+
+    public function __invoke(ServerRequestInterface $request)
+    {
+        var_dump($request);
+        $id = $request->getAttribute('id');
+
+        return new JsonResponse(['id' => $id]);
     }
 }

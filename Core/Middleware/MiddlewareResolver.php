@@ -7,7 +7,7 @@ namespace Core\Middleware;
 use Core\Pipeline\Pipeline;
 use Psr\Http\Message\ServerRequestInterface;
 
-class Resolver
+class MiddlewareResolver
 {
     public function resolve($handler)
     {
