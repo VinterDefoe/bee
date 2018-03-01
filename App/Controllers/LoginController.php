@@ -4,12 +4,15 @@
 namespace App\Controllers;
 
 
+use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
 
 class LoginController
 {
-    public function __invoke()
+    public function __invoke(ServerRequestInterface $request)
     {
-        return new JsonResponse([1]);
+        $login = $request->getParsedBody()['login'];
+        $password = $request->getParsedBody()['password'];
+        return new JsonResponse(['Login'=>$login,'Password'=> $password]);
     }
 }

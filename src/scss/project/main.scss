@@ -1,18 +1,39 @@
-.b-header{
-  background-color: black;
-  padding-top: 10px;
-  padding-bottom: 10px;
+.b-header {
+  background-color: #343a40;
+  height: 75px;
+  box-shadow: 0 0 3px 0 ;
 }
 
-.b-content{
+.b-content {
   background-color: #489048;
-  height: 500px;
+  padding-top: 75px;
+  //padding-bottom: 40px;
+  height: 100%;
+  & .container {
+    box-shadow: 0 3px 0 3px #6fb96f;
+    background-color: #6fb96f;
+  }
 }
 
-.b-footer{
-  background-color: #616d84;
-  height: 150px;
+.b-footer {
+  background-color: #343a40;
+  height: 40px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+
 }
-h1{
+
+.b-main {
+
+}
+
+h1, h2, h3 {
   color: white;
+}
+
+.b-error {
+  color: red;
+  font-size: 14px;
+  line-height: 1;
 }
