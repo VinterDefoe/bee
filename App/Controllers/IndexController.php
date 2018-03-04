@@ -9,6 +9,9 @@ use Zend\Diactoros\Response\HtmlResponse;
 
 class IndexController
 {
+    /**
+     * @var \Twig_Environment $twig
+     */
     private $twig;
 
     public function __construct()
@@ -19,9 +22,12 @@ class IndexController
 
     public function __invoke()
     {
-        $template = $this->twig->load('index.twig')->render([
-            'title' => 'Main Page'
+        $template = $this->twig->load('index.twig');
+        $template = $template->render([
+            'title' => 'Main Page',
+            'user' => true
         ]);
+
         return new HtmlResponse($template);
     }
 

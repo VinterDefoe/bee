@@ -9,8 +9,14 @@
     <link rel="stylesheet" href="App/Asserts/bundle.css">
 </head>
 <body class="body">
+<div class="container-fluid b-main">
+{% block header %}
+{% endblock %}
+
 {% block content %}
 {% endblock %}
+    {#end container#}
+</div>
 <script src="App/Asserts/bundle.js"></script>
 </body>
 </html>

@@ -21,7 +21,10 @@ require_once "vendor/autoload.php";
 #config
 
 $config = [
-    'users' => [['admin' => 'admin'], ['user' => 'user']]
+    'users' => [
+        ['login' => 'admin','password'=>'123'],
+        ['login' => 'user','password'=>'user'],
+                ]
 ];
 
 #Init
@@ -42,7 +45,7 @@ $container->add('twig', $twig);
 
 #Routing
 
-$routeCollections->post('login','^/login/',LoginController::class);
+$routeCollections->post('login','^/login/',new LoginController($config['users']));
 $routeCollections->get('blog','^/blog/{id}',BlogController::class,['id'=>'\d+']);
 $routeCollections->get('index','^/{id}',IndexController::class,['id'=>'\d+']);
 $routeCollections->get('index_list','^/',IndexController::class);
@@ -59,7 +62,9 @@ foreach ($result->getAttributes() as $name=>$value){
 }
 $app->pipe($result->getHandler());
 
-
+//setcookie('test','test',time()+3600);
+//var_dump($request);
+//$db = new SQLite3('mysqlitedb.db');
 /**
  * @var ResponseInterface $response
  */
