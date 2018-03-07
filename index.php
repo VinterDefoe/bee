@@ -64,7 +64,7 @@ $app->pipe($result->getHandler());
 
 //setcookie('test','test',time()+3600);
 //var_dump($request);
-//$db = new SQLite3('mysqlitedb.db');
+$db = new SQLite3('mysqlitedb.db');
 /**
  * @var ResponseInterface $response
  */
