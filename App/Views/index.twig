@@ -11,10 +11,30 @@
         {#Content#}
         <div class="row b-content">
             <div class="container">
-                <div class="row">
+                <div class="row b-reviews">
                     <div class="col">
-                        <h2>content</h2>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Review</th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
+                            {% for review in reviews %}
+                            <tr>
+                                <th scope="row">{{ loop.index }}</th>
+                                <td>{{ review.review_name }}</td>
+                                <td>{{ review.review_email }}</td>
+                                <td>{{ review.review_text }}</td>
+                            </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

@@ -28,6 +28,7 @@ class Container
 
     public function get($name)
     {
+        if(!isset($this->container[$name])) return false;
         return $this->container[$name];
     }
 

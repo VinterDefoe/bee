@@ -10,16 +10,13 @@
                     <h1 class="text-left">Reviews</h1>
                 </div>
 
-                <div class="col-5">
-                    {% if user == true %}
+                <div class="col-5 text-right">
+                    {% if not userName %}
                     <form class="m-0" action="login/" method="post">
                         <div class="form-group-sm">
                             <label><input class="form-control form-control-sm" placeholder="Login" name="login" type="text"></label>
                             <label><input class="form-control form-control-sm" placeholder="Password" name="password" type="text"></label>
                             <input class=" btn-sm btn-primary" type="submit" value="Sing in">
-                        </div>
-                        <div class="b-error">
-                            {#Wrong login or password!#}
                         </div>
                     </form>
                     {% else %}

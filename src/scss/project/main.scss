@@ -1,12 +1,12 @@
 .b-header {
   background-color: #343a40;
-  height: 75px;
+  height: 60px;
   box-shadow: 0 0 3px 0 ;
 }
 
 .b-content {
   background-color: #489048;
-  padding-top: 75px;
+  padding-top: 60px;
   //padding-bottom: 40px;
   height: 100%;
   & .container {
@@ -41,4 +41,8 @@ h1, h2, h3 {
 .b-user{
   color: white;
   padding-right: 15px;
+}
+
+.b-reviews{
+  padding-top: 10px;
 }
