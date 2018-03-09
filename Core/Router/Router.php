@@ -26,6 +26,6 @@ class Router
             $result = $route->match($request);
             if($result) return $result;
         }
-        throw new \LogicException("Can't match route");
+        return false;
     }
 }

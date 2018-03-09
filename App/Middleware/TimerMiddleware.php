@@ -12,7 +12,6 @@ class TimerMiddleware
 
     public function __invoke(ServerRequestInterface $request,  callable $next)
     {
-
         $start = microtime(true);
 
         $response =  $next($request);
@@ -22,7 +21,5 @@ class TimerMiddleware
          * @var ResponseInterface $response
          */
         return $response->withHeader('X-Timer',$stop-$start);
-
-
     }
 }
