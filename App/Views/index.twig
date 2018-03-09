@@ -17,7 +17,11 @@
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Name</th>
+                                <th scope="col">
+                                    Name
+                                    <a href="#" class="arrow-circle-bottom"></a>
+                                    <span class="arrow-circle-top-active"></span>
+                                </th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Review</th>
                             </tr>
@@ -37,21 +41,44 @@
                         </table>
                     </div>
                 </div>
+
+                <div class="row b-reviews-form">
+                    <div class="col-4">
+                        <h2>Add reviews form</h2>
+                        <form action="" method="post" class="was-validated">
+                            <div class="form-group">
+                                <label for="name"></label>
+                                <input type="text" class="form-control" id="name" placeholder="Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="email"></label>
+                                <input type="email" class="form-control" id="email" placeholder="Email">
+                            </div>
+                            <div class="form-group">
+                                <label for="review"></label>
+                                <textarea name="review" placeholder="Review" id="review" cols="47" rows="5"></textarea>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="validatedCustomFile" required>
+                                <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                                <div class="invalid-feedback">Example invalid custom file feedback</div>
+                            </div>
+                            <div class="form-row text-right">
+                                <div class="col-6">
+                                    <label for="preview"></label>
+                                    <input type="submit" class="btn-sm btn-primary" id="preview" value="Preview">
+                                </div>
+                                <div class="col-6">
+                                    <label for="send"></label>
+                                    <input type="submit" class="btn-sm btn-primary" id="send" value="Send">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
             </div>
         </div>
-        {#end content#}
 
-    {#Footer#}
-    {#<div class="container-fluid">#}
-        {#<div class="row b-footer">#}
-            {#<div class="container">#}
-                {#<div class="row">#}
-                    {#<div class="col">#}
-
-                    {#</div>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
-    {#</div>#}
 
 {% endblock %}
