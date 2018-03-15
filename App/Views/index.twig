@@ -3,82 +3,116 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block header %}
-{% include 'header.twig' %}
+    {% include 'header.twig' %}
 {% endblock %}
 
 {% block content %}
 
-        {#Content#}
-        <div class="row b-content">
-            <div class="container">
-                <div class="row b-reviews">
-                    <div class="col">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">
-                                    Name
-                                    <a href="#" class="arrow-circle-bottom"></a>
-                                    <span class="arrow-circle-top-active"></span>
-                                </th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Review</th>
-                            </tr>
-                            </thead>
-                            <tbody>
+    {#Content#}
+    <div class="row b-content">
+        <div class="container">
+            <div class="row b-reviews">
+                {#<div class="col">#}
+                    {#<table class="table">#}
+                        {#<thead>#}
+                        {#<tr>#}
+                            {#<th scope="col">#</th>#}
+                            {#<th scope="col">#}
+                                {#Name#}
+                                {#<a href="#" class="arrow-circle-bottom"></a>#}
+                                {#<span class="arrow-circle-top-active"></span>#}
+                            {#</th>#}
+                            {#<th scope="col">Email</th>#}
+                            {#<th scope="col">Review</th>#}
+                        {#</tr>#}
+                        {#</thead>#}
+                        {#<tbody>#}
 
-                            {% for review in reviews %}
-                            <tr>
-                                <th scope="row">{{ loop.index }}</th>
-                                <td>{{ review.review_name }}</td>
-                                <td>{{ review.review_email }}</td>
-                                <td>{{ review.review_text }}</td>
-                            </tr>
-                            {% endfor %}
+                        {#{% for review in reviews %}#}
+                            {#<tr>#}
+                                {#<th scope="row">{{ loop.index }}</th>#}
+                                {#<td>{{ review.review_name }}</td>#}
+                                {#<td>{{ review.review_email }}</td>#}
+                                {#<td>{{ review.review_text }}</td>#}
+                            {#</tr>#}
+                        {#{% endfor %}#}
 
-                            </tbody>
-                        </table>
+                        {#</tbody>#}
+                    {#</table>#}
+                {#</div>#}
+                <div class="col-12">
+                    <div class="row b-review">
+                        <div class="col-4">
+                            <img width="320" height="240" src="../../App/Asserts/img/img1.jpg" alt="">
+                        </div>
+                        <div class="col-8">
+                            <div><b>Name: </b>John</div>
+                            <div><b>Email: </b>Email@test</div>
+                            <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                Ab debitis est eum obcaecati perferendis quia soluta, voluptate.
+                                Autem ipsum, labore. Delectus dolorum, eum facere incidunt ipsum
+                                nam reiciendis sunt! Natus.
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="row b-reviews-form">
-                    <div class="col-4">
-                        <h2>Add reviews form</h2>
-                        <form action="" method="post" class="was-validated">
-                            <div class="form-group">
-                                <label for="name"></label>
-                                <input type="text" class="form-control" id="name" placeholder="Name">
-                            </div>
-                            <div class="form-group">
-                                <label for="email"></label>
-                                <input type="email" class="form-control" id="email" placeholder="Email">
-                            </div>
-                            <div class="form-group">
-                                <label for="review"></label>
-                                <textarea name="review" placeholder="Review" id="review" cols="47" rows="5"></textarea>
-                            </div>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="validatedCustomFile" required>
-                                <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
-                                <div class="invalid-feedback">Example invalid custom file feedback</div>
-                            </div>
-                            <div class="form-row text-right">
-                                <div class="col-6">
-                                    <label for="preview"></label>
-                                    <input type="submit" class="btn-sm btn-primary" id="preview" value="Preview">
-                                </div>
-                                <div class="col-6">
-                                    <label for="send"></label>
-                                    <input type="submit" class="btn-sm btn-primary" id="send" value="Send">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
             </div>
+
+            <div class="row b-reviews-form">
+                <div class="col-12">
+                    <h2 class="text-dark">Add reviews form</h2>
+                    <form action="" method="post" class="needs-validation" novalidate>
+
+                        <div class="form-row ">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="name"></label>
+                                    <input type="text" class="form-control" id="name" placeholder="Name" required>
+                                    <div class="invalid-feedback">
+                                        Please enter your name
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email"></label>
+                                    <input type="email" class="form-control" id="email" placeholder="Email" required>
+                                    <div class="invalid-feedback">
+                                        Please enter your email
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="review"></label>
+                                    <textarea name="review" required placeholder="Review" id="review" cols="75" rows="4"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-4">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="customFile">
+                                    <label class="custom-file-label" for="customFile">Choose file...</label>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="preview"></label>
+                                    <button class="btn btn-primary">Preview</button>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="send"></label>
+                                    <input type="submit" class="btn btn-primary" id="send" value="Send">
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+
         </div>
-
-
+    </div>
 {% endblock %}

@@ -36,7 +36,7 @@ $container->add('templatePath', 'App/Views');
 
 #Routing
 
-$routeCollections->add(['GET','POST'],'login', '^/login/', LoginController::class);
+$routeCollections->add(['GET', 'POST'], 'login', '^/login/', LoginController::class);
 $routeCollections->get('index', '^/{id}', IndexController::class, ['id' => '\d+']);
 $routeCollections->get('index_list', '^/', IndexController::class);
 
