@@ -1,10 +1,8 @@
 <?php
 
-use App\Controllers\BlogController;
 use App\Controllers\IndexController;
 use App\Controllers\LoginController;
 use App\Middleware\Auth\AuthMiddleware;
-use App\Middleware\Auth\LoginMiddleware;
 use App\Middleware\CatcherErrorMiddleware;
 use App\Middleware\NotFoundPageMiddleware;
 use App\Middleware\TimerMiddleware;

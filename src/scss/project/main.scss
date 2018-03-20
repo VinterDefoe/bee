@@ -31,17 +31,24 @@
 
 
 /////////////////
+.b-review{
+  padding-bottom: 10px;
+}
+.b-sort-reviews{
+  padding-bottom: 10px;
+}
+.b-reviews-form-btnblock{
+  padding-top: 15px;
+}
 .b-header {
   background-color: #343a40;
-  height: 60px;
   box-shadow: 0 0 3px 0 ;
 }
 
 .b-content {
   background-color: #489048;
-  padding-top: 60px;
+  padding-top: 56px;
   //padding-bottom: 40px;
-  height: 100%;
   & .container {
     box-shadow: 0 3px 0 3px #6fb96f;
     background-color: #6fb96f;
@@ -66,8 +73,9 @@ h1, h2, h3 {
 }
 
 .b-error {
-  color: red;
-  font-size: 14px;
+  padding-top: 5px;
+  font-size: 80%;
+  color: #dc3545;
   line-height: 1;
 }
 
