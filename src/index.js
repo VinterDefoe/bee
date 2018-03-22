@@ -1,14 +1,8 @@
 //import _ from 'lodash';
-import './scss/style.scss';
-import 'bootstrap';
+import "./scss/style.scss";
+import "bootstrap";
 
-//////// Add Review Form file input//////
-$(function () {
-    $('.custom-file-input').on('change', function () {
-        $(this).next('.custom-file-label').html($(this).val());
-    })
 
-});
 // Preview and send
 $(function () {
     var reviewBlock = $('.b-review:first').clone();
@@ -26,8 +20,14 @@ $(function () {
         var res = validation(data);
         if (res) {
             var block = createReviewBlock(data);
+            var imgNode = block.find('.b-review-img');
+            getImg(data.file, imgNode);
             $('.b-reviews .col-12').append(block);
         }
+    });
+
+    $('.custom-file-input').on('change', function () {
+        $(this).next('.custom-file-label').html($(this).val());
     });
 
     var validate = {
@@ -100,74 +100,40 @@ $(function () {
     }
 
     function createReviewBlock(data) {
-        getImg(data.file);
         return reviewBlock
             .find('.b-review-img img')
-                .attr('')
+            .remove()
             .end()
             .find('.b-review-name')
-                .text(data.name.val())
+            .text(data.name.val())
             .end()
             .find('.b-review-email')
-                .text(data.email.val())
+            .text(data.email.val())
             .end()
             .find('.b-review-review')
-                .text(data.review.val())
+            .text(data.review.val())
             .end();
     }
 
-    function getImg(data) {
-      //  var imgBlock = $(element);
-        var render = new FileReader();
+    function getImg(data, element) {
         var file = data[0].files[0];
-        var url;
-        var img = new Image();
-        if (file){
-            render.onload = function (e) {
-
-                $('#image').attr('src', e.target.result);
-            };
-            render.readAsDataURL(file);
-        }
-
-    }
-
-
-    function previewFile() {
-
-        window.URL    = window.URL || window.webkitURL;
-        var elBrowse  = document.getElementById("browse"),
-            elPreview = document.getElementById("preview"),
-            useBlob   = false && window.URL; // set to `true` to use Blob instead of Data-URL
-
-        function readImage (file) {
-            var reader = new FileReader();
-
-            reader.addEventListener("load", function () {
-                var image  = new Image();
-
-                image.addEventListener("load", function () {
-                    var imageInfo = file.name +' '+
-                        image.width +'×'+
-                        image.height +' '+
-                        file.type +' '+
-                        Math.round(file.size/1024) +'KB';
-
-                    // Show image and info
-                    elPreview.appendChild( this );
-                    elPreview.insertAdjacentHTML("beforeend", imageInfo +'<br>');
-
-                    if (useBlob) {
-                        // Free some memory
-                        window.URL.revokeObjectURL(image.src);
-                    }
-                });
-                image.src = useBlob ? window.URL.createObjectURL(file) : reader.result;
+        var reader = new FileReader();
+        reader.addEventListener("load", function () {
+            var image = new Image();
+            image.addEventListener("load", function () {
+                var result = resizeImg(image.width, image.height, 320, 240);
+                image.width = result.width;
+                image.height = result.height;
+                element.append(this);
             });
-
-            reader.readAsDataURL(file);
-        }
+            image.src = window.URL.createObjectURL(file);
+        });
+        reader.readAsDataURL(file);
     }
 
-
+    function resizeImg(srcWidth, srcHeight, maxWidth, maxHeight) {
+        var ratio = [maxWidth / srcWidth, maxHeight / srcHeight];
+        ratio = Math.min(ratio[0], ratio[1]);
+        return {width: srcWidth * ratio, height: srcHeight * ratio};
+    }
 });
