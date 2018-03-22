@@ -10469,9 +10469,7 @@ $(function () {
 
     $(".b-preview").click(function () {
         var data = getDataFields();
-        var name = data.name.val();
-        console.log(data.name.val());
-        var res = validation(getDataFields());
+        var res = validation(data);
         if (res) {
             var block = createReviewBlock(data);
             $('.b-reviews .col-12').append(block);
@@ -10500,27 +10498,27 @@ $(function () {
             validSuccess(data.name);
         }
         ////// email /////
-        if (validate.isEmpty(data.email.val())) {
-            valid = validError(data.email, 'Enter email');
-        } else {
-            if (!validate.isEmail(data.email.val())) {
-                valid = validError(data.email, 'Wrong email');
-            } else {
-                validSuccess(data.email);
-            }
-        }
-        ////// review //////
-        if (validate.isEmpty(data.review.val())) {
-            valid = validError(data.review, 'Review can not be empty');
-        } else {
-            validSuccess(data.review);
-        }
-        ////// file /////
-        if (validate.isValidImgFormat(data.file.val(), ['jpg', 'gif', 'png'])) {
-            valid = validError(data.file, 'Wrong format');
-        } else {
-            validSuccess(data.file);
-        }
+        // if (validate.isEmpty(data.email.val())) {
+        //     valid = validError(data.email, 'Enter email');
+        // } else {
+        //     if (!validate.isEmail(data.email.val())) {
+        //         valid = validError(data.email, 'Wrong email');
+        //     } else {
+        //         validSuccess(data.email);
+        //     }
+        // }
+        // ////// review //////
+        // if (validate.isEmpty(data.review.val())) {
+        //     valid = validError(data.review, 'Review can not be empty');
+        // } else {
+        //     validSuccess(data.review);
+        // }
+        // ////// file /////
+        // if (validate.isValidImgFormat(data.file.val(), ['jpg', 'gif', 'png'])) {
+        //     valid = validError(data.file, 'Wrong format');
+        // } else {
+        //     validSuccess(data.file);
+        // }
 
         return valid;
     }
@@ -10548,14 +10546,76 @@ $(function () {
     }
 
     function createReviewBlock(data) {
+        getImg(data.file);
         return reviewBlock
+            .find('.b-review-img img')
+                .attr('')
+            .end()
             .find('.b-review-name')
-            .text(data.name.val())
+                .text(data.name.val())
             .end()
             .find('.b-review-email')
-            .text('')
+                .text(data.email.val())
+            .end()
+            .find('.b-review-review')
+                .text(data.review.val())
             .end();
     }
+
+    function getImg(data) {
+      //  var imgBlock = $(element);
+        var render = new FileReader();
+        var file = data[0].files[0];
+        var url;
+        var img = new Image();
+        if (file){
+            render.onload = function (e) {
+
+                $('#image').attr('src', e.target.result);
+            };
+            render.readAsDataURL(file);
+        }
+
+    }
+
+
+    function previewFile() {
+
+        window.URL    = window.URL || window.webkitURL;
+        var elBrowse  = document.getElementById("browse"),
+            elPreview = document.getElementById("preview"),
+            useBlob   = false && window.URL; // set to `true` to use Blob instead of Data-URL
+
+        function readImage (file) {
+            var reader = new FileReader();
+
+            reader.addEventListener("load", function () {
+                var image  = new Image();
+
+                image.addEventListener("load", function () {
+                    var imageInfo = file.name +' '+
+                        image.width +'×'+
+                        image.height +' '+
+                        file.type +' '+
+                        Math.round(file.size/1024) +'KB';
+
+                    // Show image and info
+                    elPreview.appendChild( this );
+                    elPreview.insertAdjacentHTML("beforeend", imageInfo +'<br>');
+
+                    if (useBlob) {
+                        // Free some memory
+                        window.URL.revokeObjectURL(image.src);
+                    }
+                });
+                image.src = useBlob ? window.URL.createObjectURL(file) : reader.result;
+            });
+
+            reader.readAsDataURL(file);
+        }
+    }
+
+
 });
 
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(0)))
