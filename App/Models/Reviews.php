@@ -4,41 +4,33 @@
 namespace App\Models;
 
 
+use App\Helpers\ValidationHelper;
 use Core\Container\Container;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\UploadedFile;
 
 class Reviews
 {
+	use ValidationHelper;
     /**
      * @var \PDO $db
      */
     private $db;
 
+    private $name;
+    private $email;
+    private $review;
+	/**
+	 * @var UploadedFile $file
+	 */
+    private $file;
+    private $status = 10;
+
+    private $uploadImgPath = 'upload/';
+
     public function __construct()
     {
         $this->db = Container::getContainer()->get('db');
-    }
-
-    public function create($name, $email, $review, $img, $status = 10)
-    {
-        $date = (new \DateTime())->getTimestamp();
-        $sql = "INSERT INTO reviews (review_name,
-                                     review_email,
-                                     review_text,
-                                     review_date,
-                                     review_img,
-                                     review_status)
-                VALUES (:name,:email,:review,:date,:img,:status);";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':review', $review);
-        $stmt->bindParam(':date', $date);
-        $stmt->bindParam(':img', $img);
-        $stmt->bindParam(':status', $status);
-
-        return $stmt->execute();
     }
 
     public function read()
@@ -51,73 +43,91 @@ class Reviews
     public function addReview()
     {
 
-//        $file = $this->getImg($file);
-//        $file->moveTo('upload/132.jpg');
+        $file = $this->getImg($this->file);
+//        $imgName = $this->generateImgName();
+//        $file->moveTo($this->uploadImgPath.$imgName);
+
     }
 
-    public function validate(ServerRequestInterface $request)
-    {
+	/**
+	 * Load Date from $request
+	 * @param ServerRequestInterface $request
+	 */
+	public function loadDate(ServerRequestInterface $request)
+	{
+		$this->name = trim($request->getParsedBody()['name']);
+		$this->email = trim($request->getParsedBody()['email']);
+		$this->review = trim($request->getParsedBody()['review']);
+		$this->file = $request->getUploadedFiles()['file'];
+	}
 
-        $name = trim($request->getParsedBody()['name']);
-        $email = trim($request->getParsedBody()['email']);
-        $review = trim($request->getParsedBody()['review']);
-        /**
-         * @var UploadedFile $file
-         */
-        $file = $request->getUploadedFiles()['file'];
+	/**
+	 * Return errors messages
+	 * @return array
+	 */
+	public function validate()
+	{
+		$error = [];
+		if(empty($this->name)){
+			$error['name'] = 'Enter name';
+		}
+		if(empty($this->email)){
+			$error['email'] = 'Enter email';
+		}elseif (!$this->isValidEmail($this->email)){
+			$error['email'] = 'Enter correct email';
+		}
+		if(empty($this->review)){
+			$error['review'] = 'Enter review';
+		}
+		if(!empty($this->file->getSize())){
+			if(!$this->isValidImgMediaType($this->file)){
+				$error['img_error'] = 'Wrong file type';
+			}elseif (!$this->isValidImgSize($this->file)){
+				$error['img_error'] = 'Too big file size';
+			}
+		}
+		return $error;
+	}
 
-        var_dump($file);
-        $error = [];
-        if(empty($name)){
-            $error['name'] = 'Enter name';
-        }
-        if(empty($email)){
-            $error['email'] = 'Enter email';
-        }elseif (!$this->isValidEmail($email)){
-            $error['email'] = 'Enter correct email';
-        }
-        if(empty($review)){
-            $error['review'] = 'Enter review';
-        }
-        if(!empty($file->getSize())){
-            if(!$this->isValidImgMediaType($file)){
-                $error['img_error'] = 'Wrong file type';
-            }
-            if($this->isValidImgSize($file)){
-                $error['img_error'] = 'Too big file size';
-            }
-        }
-        return $error;
-    }
-    public function isValidEmail($email)
-    {
-        return true;
-    }
+	/**
+	 * @param $name
+	 * @param $email
+	 * @param $review
+	 * @param $img
+	 * @param int $status
+	 * @return bool
+	 */
+	private function create($name, $email, $review, $img, $status = 10)
+	{
+		$date = (new \DateTime())->getTimestamp();
+		$sql = "INSERT INTO reviews (review_name,
+                                     review_email,
+                                     review_text,
+                                     review_date,
+                                     review_img,
+                                     review_status)
+                VALUES (:name,:email,:review,:date,:img,:status);";
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindParam(':name', $name);
+		$stmt->bindParam(':email', $email);
+		$stmt->bindParam(':review', $review);
+		$stmt->bindParam(':date', $date);
+		$stmt->bindParam(':img', $img);
+		$stmt->bindParam(':status', $status);
 
-    public function isValidImgSize(UploadedFile $file,$maxSize = 1024000)
-    {
-        if ($file->getSize() > $maxSize) {
-            return false;
-        }
-        return true;
-    }
+		return $stmt->execute();
+	}
 
-    public function isValidImgMediaType(UploadedFile $file, $mediaType = ['gif', 'png', 'jpeg'], $maxSize = 1024000)
+	/**
+	 * Return Image with optimizing Width and Height
+	 * @param UploadedFile $file
+	 * @return bool|UploadedFile
+	 */
+    private function getImg(UploadedFile $file)
     {
-        $mediaType = array_map(function ($element) {
-            return 'image/' . $element;
-        }, $mediaType);
-        if (!in_array($file->getClientMediaType(), $mediaType)) {
-            return false;
-        }
-        return true;
-    }
+	    if(!$this->isValidImgMediaType($file)) return false;
+	    if(!$this->isValidImgSize($file)) return false;
 
-    public function getImg(UploadedFile $file, $path = 'upload/', $tmp_path = 'tmp/')
-    {
-        if ($error = $this->validImg($file)) {
-            return false;
-        }
         $tmp = ($file->getStream())->getMetadata()['uri'];
 
         if ($file->getClientMediaType() === 'image/jpeg') {
@@ -145,6 +155,14 @@ class Reviews
         return $file;
     }
 
+	/**
+	 * Return optimize Width and Height
+	 * @param $srcWidth
+	 * @param $srcHeight
+	 * @param int $maxWidth
+	 * @param int $maxHeight
+	 * @return array
+	 */
     private function resizeImg($srcWidth, $srcHeight, $maxWidth = 320, $maxHeight = 240)
     {
         if ($srcWidth < $maxWidth && $srcHeight < $maxHeight) {
@@ -155,4 +173,8 @@ class Reviews
         return ['width' => $srcWidth * $ratio, 'height' => $srcHeight * $ratio];
     }
 
+    private function generateImgName()
+    {
+		return '';
+    }
 }

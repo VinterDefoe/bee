@@ -10,7 +10,7 @@
                 </div>
 
                 <div class="col-5 text-right">
-                    {% if not userName %}
+                    {% if not user.userName %}
                     <form class="m-0" action="login/" method="post">
                         <div class="form-group-sm">
                             <label><input class="form-control form-control-sm" placeholder="Login" name="login" type="text"></label>
@@ -22,10 +22,7 @@
                         <form class="m-0" action="logout/" method="post">
                             <div class="form-group-sm">
                                 <span class="b-user"><b>admin</b></span>
-                                <input class=" btn-sm btn-primary" type="submit" value="Sing out">
-                            </div>
-                            <div class="b-error">
-                                {#Wrong login or password!#}
+                                <input class=" btn-sm btn-primary" type="submit" value="Logout">
                             </div>
                         </form>
                     {% endif %}
