@@ -23,7 +23,15 @@ class IndexController extends TwigView
     public function __invoke(ServerRequestInterface $request)
     {
         $model = new Reviews();
+        if ($request->getMethod() === "POST"){
+           if($erorr = $model->validate($request)){
+               var_dump($erorr);
+           }
+        }
         $reviews = $model->read();
+//        $model->create('John','John@email.ru','review from John','upload/man.jpg');
+//        $model->create('Neo','Neo@email.ru','review from Neo','upload/matrix.jpg');
+//        $model->create('Alex','Alex@email.ru','review from Alex','upload/img1.jpg');
 
         $template = $this->twig->load('index.twig');
         $userAttr = $this->getUserAttributes($request);

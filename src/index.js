@@ -127,7 +127,7 @@ $(function () {
         // } else {
         //     validSuccess(data.review);
         // }
-        // ////// file /////
+        ////// file /////
         // if (!validate.isValidImgFormat(data.file.val(), ['jpg', 'gif', 'png'])) {
         //     valid = validError(data.file, 'Wrong format');
         // } else {
@@ -198,6 +198,9 @@ $(function () {
     }
 
     function resizeImg(srcWidth, srcHeight, maxWidth, maxHeight) {
+        if (srcWidth < maxWidth && srcHeight < maxHeight ){
+            return {width: srcWidth, height: srcHeight};
+        }
         var ratio = [maxWidth / srcWidth, maxHeight / srcHeight];
         ratio = Math.min(ratio[0], ratio[1]);
         return {width: srcWidth * ratio, height: srcHeight * ratio};
