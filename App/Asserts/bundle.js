@@ -10448,6 +10448,61 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+// filter reviews
+$(function () {
+    /// Sort by name
+    $('.sort-name').on('click', function () {
+        tab($(this));
+        var reviews = $('.b-review');
+        var reviewsBlock = $('.b-reviews .col-12');
+        reviewsBlock.find('.b-review').remove();
+        reviews = sortByName(reviews,'b-review-name');
+        reviewsBlock.append(reviews);
+    });
+    // Sort by email
+    $('.sort-email').on('click',function () {
+        tab($(this));
+        var reviews = $('.b-review');
+        var reviewsBlock = $('.b-reviews .col-12');
+        reviewsBlock.find('.b-review').remove();
+        reviews = sortByName(reviews,'b-review-email');
+        reviewsBlock.append(reviews);
+    });
+    // Sort by date
+    $('.sort-date').on('click',function () {
+        tab($(this));
+        var reviews = $('.b-review');
+        var reviewsBlock = $('.b-reviews .col-12');
+        reviewsBlock.find('.b-review').remove();
+        reviews = sortByDate(reviews,'b-review-date');
+        reviewsBlock.append(reviews);
+    });
+    
+    function tab(element) {
+        element.addClass('btn-danger');
+        element.removeClass('btn-dark');
+        element.siblings().removeClass('btn-danger');
+        element.siblings().addClass('btn-dark');
+    }
+    
+    function sortByName(arr,valueClass) {
+        return arr.sort(function (a, b) {
+            var a = a.getElementsByClassName(valueClass)[0].textContent.toLowerCase();
+            var b = b.getElementsByClassName(valueClass)[0].textContent.toLowerCase();
+            if(a < b){return -1;}
+            if(a > b){return 1;}
+            return 0;
+        });
+    }
+
+    function sortByDate(arr,valueClass) {
+       return arr.sort(function (a, b) {
+           var a = a.getElementsByClassName(valueClass)[0].textContent;
+           var b = b.getElementsByClassName(valueClass)[0].textContent;
+            return new Date(b) - new Date(a);
+        });
+    }
+});
 
 // Preview and send
 $(function () {
@@ -10467,7 +10522,9 @@ $(function () {
         if (res) {
             var block = createReviewBlock(data);
             var imgNode = block.find('.b-review-img');
-            getImg(data.file, imgNode);
+            if (data.file.val()) {
+                getImg(data.file, imgNode);
+            }
             $('.b-reviews .col-12').append(block);
         }
     });
@@ -10485,7 +10542,10 @@ $(function () {
             return !!email.match(pattern);
         },
         isValidImgFormat(img, format) {
-            return true;
+            format = format.map(function (e) {
+                return e = '.' + e + '$';
+            });
+            return (new RegExp(format.join('|'))).test(img);
         }
     };
 
@@ -10514,7 +10574,7 @@ $(function () {
         //     validSuccess(data.review);
         // }
         // ////// file /////
-        // if (validate.isValidImgFormat(data.file.val(), ['jpg', 'gif', 'png'])) {
+        // if (!validate.isValidImgFormat(data.file.val(), ['jpg', 'gif', 'png'])) {
         //     valid = validError(data.file, 'Wrong format');
         // } else {
         //     validSuccess(data.file);
@@ -10546,6 +10606,9 @@ $(function () {
     }
 
     function createReviewBlock(data) {
+        var date = new Date();
+        date = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+
         return reviewBlock
             .find('.b-review-img img')
             .remove()
@@ -10555,6 +10618,9 @@ $(function () {
             .end()
             .find('.b-review-email')
             .text(data.email.val())
+            .end()
+            .find('.b-review-date')
+            .text(date)
             .end()
             .find('.b-review-review')
             .text(data.review.val())

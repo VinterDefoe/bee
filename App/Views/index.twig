@@ -13,29 +13,25 @@
         <div class="container">
             <div class="row b-reviews">
                 <div class="col-12">
-                    <div class="b-sort-reviews">
-                        <span><b>Sort by:</b></span>
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-secondary">
-                                <input type="radio" name="options" id="option1" autocomplete="off"> Name
-                            </label>
-                            <label class="btn btn-secondary">
-                                <input type="radio" name="options" id="option2" autocomplete="off"> Email
-                            </label>
-                            <label class="btn btn-secondary">
-                                <input type="radio" name="options" id="option3" autocomplete="off"> Date
-                            </label>
+                    <div class="text-right">
+                        <div class="b-sort-reviews-title"><b>Sort by:</b></div>
+                        <div class="b-sort-reviews">
+                            <span class="btn-sm btn-dark sort-name">Name</span>
+                            <span class="btn-sm btn-dark sort-email">Email</span>
+                            <span class="btn-sm btn-dark sort-date">Date</span>
                         </div>
                     </div>
+
                     {% for review in reviews %}
                         <div class="row b-review">
-                            <div class="col-4 b-review-img">
-                                <img src="../../App/Asserts/img/img1.jpg" alt="">
+                            <div class="col-4 b-review-img text-center">
+                                {#<img src="../../App/Asserts/img/img1.jpg" alt="">#}
                             </div>
                             <div class="col-8">
-                                <div class="b-review-name"><b>Name: </b>{{ review.review_name }}</div>
-                                <div class="b-review-email"><b>Email: </b>{{ review.review_email }}</div>
-                                <div class="b-review-review">{{ review.review_text }}</div>
+                                <div><b>Name: </b><span class="b-review-name">{{ review.review_name }}</span></div>
+                                <div><b>Email: </b><span class="b-review-email">{{ review.review_email }}</span></div>
+                                <div><b>Date: </b><span class="b-review-date">24.03</span></div>
+                                <div><span class="b-review-review">{{ review.review_text }}</span></div>
                             </div>
                         </div>
                     {% endfor %}

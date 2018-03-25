@@ -31,6 +31,15 @@
 
 
 /////////////////
+.b-sort-reviews span{
+  cursor: pointer;
+}
+.b-sort-reviews{
+  display: inline-block;
+}
+.b-sort-reviews-title{
+  display: inline-block;
+}
 .b-review{
   padding-bottom: 10px;
 }
