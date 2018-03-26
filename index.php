@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\Admin\IndexController as adminReviews;
 use App\Controllers\IndexController;
 use App\Controllers\LoginController;
 use App\Controllers\LogoutController;
@@ -34,11 +35,12 @@ $container->add('db', $db);
 $container->add('templatePath', 'App/Views');
 
 #Routing
-
+$routeCollections->get('adminIndex', '^/admin/{id}', adminReviews::class, ['id' => '\d+']);
+$routeCollections->get( 'admin_list', '^/admin/?', adminReviews::class);
 $routeCollections->add(['GET', 'POST'], 'login', '^/login/', LoginController::class);
-$routeCollections->get( 'logout', '^/logout/', LogoutController::class);
+$routeCollections->get('logout', '^/logout/', LogoutController::class);
 $routeCollections->get('index', '^/{id}', IndexController::class, ['id' => '\d+']);
-$routeCollections->add(['GET', 'POST'],'index_list', '^/', IndexController::class);
+$routeCollections->add(['GET', 'POST'], 'index_list', '^/', IndexController::class);
 
 $router = new Router($routeCollections);
 
@@ -55,7 +57,6 @@ $response = $app->run($request);
 # Sending
 
 $emitter->emit($response);
-
 
 
 

@@ -26,7 +26,7 @@ class Users
      */
     public function addUser($login, $password, $role = 10)
     {
-        if(!$this->isUniqueLogin($login)) return false;
+        if (!$this->isUniqueLogin($login)) return false;
         $password = md5($password);
         $sql = "INSERT INTO users (user_name, user_password, user_role) 
                 VALUES (:login,:password,:role);";
@@ -46,8 +46,8 @@ class Users
     {
         $sql = "SELECT user_name FROM users";
         $users = $this->db->query($sql);
-        foreach ($users as $user){
-            if($login === $user['user_name']) return false;
+        foreach ($users as $user) {
+            if ($login === $user['user_name']) return false;
         }
         return true;
     }
@@ -61,9 +61,9 @@ class Users
         $sql = "SELECT user_name,user_password,user_role
                 FROM users WHERE user_name = :login";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':login',$login);
+        $stmt->bindParam(':login', $login);
         $res = $stmt->execute();
-        if(!$res) return false;
+        if (!$res) return false;
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
@@ -72,12 +72,12 @@ class Users
      * @param $password
      * @return bool
      */
-    public function userIdentifi($login,$password)
+    public function userIdentification($login, $password)
     {
         $sql = "SELECT user_name,user_password,user_role FROM users";
-        $users = $this->db->query($sql,\PDO::FETCH_ASSOC);
-        foreach ($users as $user){
-            if($login === $user['user_name'] && $password === $user['user_password']){
+        $users = $this->db->query($sql, \PDO::FETCH_ASSOC);
+        foreach ($users as $user) {
+            if ($login === $user['user_name'] && $password === $user['user_password']) {
                 return $user;
             }
         }

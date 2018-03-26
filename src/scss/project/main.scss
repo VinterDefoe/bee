@@ -31,6 +31,36 @@
 
 
 /////////////////
+.b-reviews-action{
+  float: right;
+}
+.b-logotip a:hover{
+  text-decoration:none !important;
+}
+.b-logotip{
+  display: inline-block;
+}
+.b-header-menu{
+  display: inline-block;
+  padding-bottom: 5px;
+  padding-left: 20px;
+  vertical-align: middle;
+  color: white;
+}
+.b-header-menu a{
+  color: #6fb96f;
+}
+.b-header-menu a:hover{
+  text-decoration:none !important;
+  color: white;
+}
+
+.b-change-admin{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding-right: 10px;
+}
 .b-sort-reviews span{
   cursor: pointer;
 }
@@ -55,7 +85,6 @@
 }
 
 .b-content {
-  background-color: #489048;
   padding-top: 56px;
   padding-bottom: 30px;
   & .container {
@@ -79,6 +108,7 @@ body {
 .b-main {
   position: relative;
   min-height: 100%;
+  background-color: #489048;
 }
 
 h1, h2, h3 {
@@ -98,5 +128,5 @@ h1, h2, h3 {
 }
 
 .b-reviews{
-  padding-top: 10px;
+
 }

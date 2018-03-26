@@ -8,6 +8,10 @@ use Psr\Http\Message\ServerRequestInterface;
 
 trait UserHelper
 {
+    /**
+     * @param ServerRequestInterface $request
+     * @return array
+     */
     public function getUserAttributes(ServerRequestInterface $request)
     {
         if ($user = $request->getAttribute(AuthMiddleware::USER)) {

@@ -11,6 +11,10 @@ use Zend\Diactoros\Response\RedirectResponse;
 
 class LoginController
 {
+    /**
+     * @param ServerRequestInterface $request
+     * @return HtmlResponse|RedirectResponse
+     */
     public function __invoke(ServerRequestInterface $request)
     {
         if ($request->getMethod() === "POST") {
@@ -18,7 +22,7 @@ class LoginController
             $password = $request->getParsedBody()['password'];
 
             $model = new Users();
-            if ($user = $model->userIdentifi($login, md5($password))) {
+            if ($user = $model->userIdentification($login, md5($password))) {
                 $token = md5($password) . ':' . $login;
                 setcookie('token', $token, time() + 360000, '/');
                 return new RedirectResponse('/');

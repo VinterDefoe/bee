@@ -28,7 +28,7 @@ class IndexController extends TwigView
         $error = [];
         if ($request->getMethod() === "POST") {
             $model->loadDate($request);
-            $error = $model->validate();
+            $error = $model->hasValidationError();
             if (!$error) {
                 $model->addReview();
                 return new RedirectResponse('/');
