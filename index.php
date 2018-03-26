@@ -2,6 +2,7 @@
 
 use App\Controllers\IndexController;
 use App\Controllers\LoginController;
+use App\Controllers\LogoutController;
 use App\Middleware\Auth\AuthMiddleware;
 use App\Middleware\CatcherErrorMiddleware;
 use App\Middleware\NotFoundPageMiddleware;
@@ -35,6 +36,7 @@ $container->add('templatePath', 'App/Views');
 #Routing
 
 $routeCollections->add(['GET', 'POST'], 'login', '^/login/', LoginController::class);
+$routeCollections->get( 'logout', '^/logout/', LogoutController::class);
 $routeCollections->get('index', '^/{id}', IndexController::class, ['id' => '\d+']);
 $routeCollections->add(['GET', 'POST'],'index_list', '^/', IndexController::class);
 

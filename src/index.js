@@ -111,29 +111,30 @@ $(function () {
         } else {
             validSuccess(data.name);
         }
-        ////// email /////
-        // if (validate.isEmpty(data.email.val())) {
-        //     valid = validError(data.email, 'Enter email');
-        // } else {
-        //     if (!validate.isEmail(data.email.val())) {
-        //         valid = validError(data.email, 'Wrong email');
-        //     } else {
-        //         validSuccess(data.email);
-        //     }
-        // }
-        // ////// review //////
-        // if (validate.isEmpty(data.review.val())) {
-        //     valid = validError(data.review, 'Review can not be empty');
-        // } else {
-        //     validSuccess(data.review);
-        // }
-        ////// file /////
-        // if (!validate.isValidImgFormat(data.file.val(), ['jpg', 'gif', 'png'])) {
-        //     valid = validError(data.file, 'Wrong format');
-        // } else {
-        //     validSuccess(data.file);
-        // }
-
+        //// email /////
+        if (validate.isEmpty(data.email.val())) {
+            valid = validError(data.email, 'Enter email');
+        } else {
+            if (!validate.isEmail(data.email.val())) {
+                valid = validError(data.email, 'Wrong email');
+            } else {
+                validSuccess(data.email);
+            }
+        }
+        ////// review //////
+        if (validate.isEmpty(data.review.val())) {
+            valid = validError(data.review, 'Review can not be empty');
+        } else {
+            validSuccess(data.review);
+        }
+        //// file /////
+        if (!validate.isEmpty(data.file.val())) {
+            if (!validate.isValidImgFormat(data.file.val(), ['jpg', 'gif', 'png'])) {
+                valid = validError(data.file, 'Wrong format');
+            } else {
+                validSuccess(data.file);
+            }
+        }
         return valid;
     }
 

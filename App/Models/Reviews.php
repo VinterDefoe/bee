@@ -40,13 +40,13 @@ class Reviews
         return $res->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @return bool
+     */
     public function addReview()
     {
-
-        $file = $this->getImg($this->file);
-//        $imgName = $this->generateImgName();
-//        $file->moveTo($this->uploadImgPath.$imgName);
-
+        $img = $this->getImgUrl();
+       return $this->create($this->name,$this->email,$this->review,$img,$this->status);
     }
 
 	/**
@@ -62,6 +62,7 @@ class Reviews
 	}
 
 	/**
+     * Validate Data from $request
 	 * Return errors messages
 	 * @return array
 	 */
@@ -118,6 +119,21 @@ class Reviews
 		return $stmt->execute();
 	}
 
+    /**
+     * @return string
+     */
+	private function getImgUrl()
+    {
+        if(!$this->file->getSize()){
+            return $src = '';
+        }
+        $file = $this->getImg($this->file);
+        $extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
+        $fileName = uniqid();
+        $src = $this->uploadImgPath.$fileName.'.'.$extension;
+        $file->moveTo($src);
+        return $src;
+    }
 	/**
 	 * Return Image with optimizing Width and Height
 	 * @param UploadedFile $file
@@ -171,10 +187,5 @@ class Reviews
         $ratio = [$maxWidth / $srcWidth, $maxHeight / $srcHeight];
         $ratio = min($ratio[0], $ratio[1]);
         return ['width' => $srcWidth * $ratio, 'height' => $srcHeight * $ratio];
-    }
-
-    private function generateImgName()
-    {
-		return '';
     }
 }

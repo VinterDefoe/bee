@@ -25,7 +25,7 @@
                     {% for review in reviews %}
                         <div class="row b-review">
                             <div class="col-4 b-review-img text-center">
-                                <img width="320" height="240" src="{{ review.review_img }}" alt="">
+                                <img src="{{ review.review_img }}" alt="">
                             </div>
                             <div class="col-8">
                                 <div><b>Name: </b><span class="b-review-name">{{ review.review_name }}</span></div>
@@ -37,7 +37,9 @@
                     {% endfor %}
                 </div>
             </div>
-
+            <div class="row b-black-block">
+                <div class="col-12"></div>
+            </div>
             <div class="row justify-content-center b-reviews-form">
                 <div class="col-6">
                     <h2 class="text-dark text-center">Add reviews form</h2>
@@ -48,22 +50,30 @@
                                 <div class="form-group">
                                     <label for="name"></label>
                                     <input type="text" class="form-control" name="name" id="name" placeholder="Name" required>
-                                    <div class="b-error"></div>
+                                    <div class="b-error">
+                                        {% if error.name %}{{ error.name }}{% endif %}
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="email"></label>
                                     <input type="email" class="form-control" name="email" id="email" placeholder="Email" >
-                                    <div class="b-error"></div>
+                                    <div class="b-error">
+                                        {% if error.email %}{{ error.email }}{% endif %}
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="review"></label>
                                     <textarea placeholder="Review" name="review" id="review" cols="74" rows="4"></textarea>
-                                    <div class="b-error"></div>
+                                    <div class="b-error">
+                                        {% if error.review %}{{ error.review }}{% endif %}
+                                    </div>
                                 </div>
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input" name="file" id="file">
                                     <label class="custom-file-label" for="file">Choose file...</label>
-                                    <div class="b-error"></div>
+                                    <div class="b-error">
+                                        {% if error.img_error %}{{ error.img_error }}{% endif %}
+                                    </div>
                                 </div>
                                 <div class="form-row justify-content-center b-reviews-form-btnblock">
                                     <div class="col-3">
@@ -90,4 +100,8 @@
 
         </div>
     </div>
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.twig' %}
 {% endblock %}

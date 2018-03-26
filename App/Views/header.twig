@@ -19,9 +19,9 @@
                         </div>
                     </form>
                     {% else %}
-                        <form class="m-0" action="logout/" method="post">
+                        <form class="m-0" action="logout/" method="get">
                             <div class="form-group-sm">
-                                <span class="b-user"><b>admin</b></span>
+                                <span class="b-user"><b>{{ user.userName }}</b></span>
                                 <input class=" btn-sm btn-primary" type="submit" value="Logout">
                             </div>
                         </form>

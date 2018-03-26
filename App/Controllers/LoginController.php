@@ -20,7 +20,7 @@ class LoginController
             $model = new Users();
             if ($user = $model->userIdentifi($login, md5($password))) {
                 $token = md5($password) . ':' . $login;
-                setcookie('token', $token, time() + 360, '/');
+                setcookie('token', $token, time() + 360000, '/');
                 return new RedirectResponse('/');
             }
             return new HtmlResponse('Not correct Login or Password');

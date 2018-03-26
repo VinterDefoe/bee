@@ -10557,29 +10557,30 @@ $(function () {
         } else {
             validSuccess(data.name);
         }
-        ////// email /////
-        // if (validate.isEmpty(data.email.val())) {
-        //     valid = validError(data.email, 'Enter email');
-        // } else {
-        //     if (!validate.isEmail(data.email.val())) {
-        //         valid = validError(data.email, 'Wrong email');
-        //     } else {
-        //         validSuccess(data.email);
-        //     }
-        // }
-        // ////// review //////
-        // if (validate.isEmpty(data.review.val())) {
-        //     valid = validError(data.review, 'Review can not be empty');
-        // } else {
-        //     validSuccess(data.review);
-        // }
-        ////// file /////
-        // if (!validate.isValidImgFormat(data.file.val(), ['jpg', 'gif', 'png'])) {
-        //     valid = validError(data.file, 'Wrong format');
-        // } else {
-        //     validSuccess(data.file);
-        // }
-
+        //// email /////
+        if (validate.isEmpty(data.email.val())) {
+            valid = validError(data.email, 'Enter email');
+        } else {
+            if (!validate.isEmail(data.email.val())) {
+                valid = validError(data.email, 'Wrong email');
+            } else {
+                validSuccess(data.email);
+            }
+        }
+        ////// review //////
+        if (validate.isEmpty(data.review.val())) {
+            valid = validError(data.review, 'Review can not be empty');
+        } else {
+            validSuccess(data.review);
+        }
+        //// file /////
+        if (!validate.isEmpty(data.file.val())) {
+            if (!validate.isValidImgFormat(data.file.val(), ['jpg', 'gif', 'png'])) {
+                valid = validError(data.file, 'Wrong format');
+            } else {
+                validSuccess(data.file);
+            }
+        }
         return valid;
     }
 
@@ -10671,7 +10672,7 @@ $(function () {
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
-	 true ? factory(exports, __webpack_require__(0), __webpack_require__(8)) :
+	 true ? factory(exports, __webpack_require__(0), __webpack_require__(4)) :
 	typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'popper.js'], factory) :
 	(factory((global.bootstrap = {}),global.jQuery,global.Popper));
 }(this, (function (exports,$,Popper) { 'use strict';
@@ -14562,11 +14563,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 
 /***/ }),
-/* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17083,10 +17080,10 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(5)))
 
 /***/ }),
-/* 9 */
+/* 5 */
 /***/ (function(module, exports) {
 
 var g;
