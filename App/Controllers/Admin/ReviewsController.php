@@ -25,7 +25,7 @@ class ReviewsController extends TwigView
     {
         $model = new Reviews();
         $reviews = $model->read();
-        $template = $this->twig->load('/Admin/index.twig');
+        $template = $this->twig->load('/Admin/reviews.twig');
         $userAttr = $this->getUserAttributes($request);
         $attributes = [
             'reviews' => $reviews,

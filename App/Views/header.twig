@@ -10,7 +10,9 @@
                         <a href="/"><div><h1 class="text-left">Reviews</h1></div></a>
                     </div>
                     <div class="b-header-menu">
+                     {% if user.userRole and user.userRole < 10 %}
                         <span><a href="/admin">Administration</a></span>
+                     {% endif %}
                     </div>
                 </div>
 

@@ -1,5 +1,7 @@
 <?php
 
+use App\Controllers\Admin\ConfirmReviewController;
+use App\Controllers\Admin\DeclineReviewController;
 use App\Controllers\Admin\ReviewController;
 use App\Controllers\Admin\ReviewsController;
 use App\Controllers\IndexController;
@@ -37,7 +39,8 @@ $container->add('db', $db);
 $container->add('templatePath', 'App/Views');
 
 #Routing
-
+$routeCollections->get('reviewConfirm', '^/admin/confirm/{id}', [PermissionMiddleware::class, ConfirmReviewController::class], ['id' => '\d+']);
+$routeCollections->get('reviewDecline', '^/admin/decline/{id}', [PermissionMiddleware::class, DeclineReviewController::class], ['id' => '\d+']);
 $routeCollections->add(['GET', 'POST'], 'adminIndex', '^/admin/{id}', [PermissionMiddleware::class, ReviewController::class], ['id' => '\d+']);
 $routeCollections->get('admin_list', '^/admin/?', [PermissionMiddleware::class, ReviewsController::class]);
 $routeCollections->add(['GET', 'POST'], 'login', '^/login/', LoginController::class);

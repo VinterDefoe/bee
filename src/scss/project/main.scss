@@ -58,7 +58,7 @@
 .b-change-admin{
   position: absolute;
   right: 0;
-  bottom: 0;
+  top: 0;
   padding-right: 10px;
 }
 .b-sort-reviews span{
@@ -71,7 +71,9 @@
   display: inline-block;
 }
 .b-review{
-  padding-bottom: 10px;
+  border-top: 1px solid #2b6636;
+  margin-bottom: 10px;
+  padding-top: 10px;
 }
 .b-sort-reviews{
   padding-bottom: 10px;

@@ -29,7 +29,8 @@ class Reviews
      */
     private $file;
     private $status = 10;
-
+    private $confirmStatus = 9;
+    private $declineStatus = 11;
     private $uploadImgPath = 'upload/';
     private $defaultImgSrc = '/App/Asserts/img/default.jpg';
 
@@ -39,6 +40,15 @@ class Reviews
     public function __construct()
     {
         $this->db = Container::getContainer()->get('db');
+    }
+
+    public function changeStatus($id, $status)
+    {
+        $sql = "UPDATE reviews SET review_status = :status WHERE review_id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
     }
 
     /**

@@ -12,3 +12,19 @@
 .b-sort{
   padding-top: 10px;
 }
+.b-reviews-tab .active span{
+  background-color: #dc3545;
+}
+.b-reviews-tab{
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.b-reviews-tab li{
+  padding-right: 10px;
+}
+.b-reviews-tab a:hover{
+  text-decoration:none !important;
+}
+.b-reviews-tab{
+ border-bottom: none;
+}

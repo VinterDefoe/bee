@@ -23,6 +23,7 @@
                     </div>
 
                     {% for review in reviews %}
+                        {% if review.review_status == 9 %}
                         <div class="row b-review">
                             <div class="col-4 b-review-img text-center">
                                 <img src="{{ review.review_img }}" alt="">
@@ -39,6 +40,7 @@
                                     </small></div>
                             </div>
                         </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -73,6 +75,7 @@
                                         {% if error.review %}{{ error.review }}{% endif %}
                                     </div>
                                 </div>
+                                <small>jpg, png, gif</small>
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input" name="file" id="file">
                                     <label class="custom-file-label" for="file">Choose file...</label>
