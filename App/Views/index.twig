@@ -32,7 +32,11 @@
                                 <div><b>Email: </b><span class="b-review-email">{{ review.review_email }}</span></div>
                                 <div><b>Date: </b><span class="b-review-date">{{ review.review_date|date("Y-m-d") }}</span></div>
                                 <div><span class="b-review-review">{{ review.review_text }}</span></div>
-                                <div class="b-change-admin"><small>Change by admin</small></div>
+                                <div class="b-change-admin"><small>
+                                        {% if review.review_change %}
+                                        Change by {{ review.review_change }}
+                                        {% endif %}
+                                    </small></div>
                             </div>
                         </div>
                     {% endfor %}

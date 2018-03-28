@@ -19,7 +19,7 @@
                             <img src="{{ review.review_img }}" alt="">
                         </div>
                         <div class="col-6">
-                            <form enctype="multipart/form-data" action="/" method="post"  novalidate>
+                            <form enctype="multipart/form-data" action="" method="post" novalidate>
                                 <div class="form-row ">
                                     <div class="col-12">
                                         <div class="form-group">
@@ -54,6 +54,7 @@
                                         <div class="form-row  b-reviews-form-btnblock justify-content-end">
                                                 <div class="form-group">
                                                     <label for="send"></label>
+                                                    <input type="hidden" name="id" value = "{{ review.review_id }}">
                                                     <input type="submit" class="btn btn-dark" id="send" value="Change">
                                                 </div>
                                         </div>

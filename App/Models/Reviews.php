@@ -5,12 +5,14 @@ namespace App\Models;
 
 
 use App\Helpers\ImageHelper;
+use App\Helpers\UserHelper;
 use Core\Container\Container;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\UploadedFile;
 
 class Reviews
 {
+    use UserHelper;
     use ImageHelper;
     /**
      * @var \PDO $db
@@ -20,6 +22,8 @@ class Reviews
     private $name;
     private $email;
     private $review;
+    private $id;
+    private $change;
     /**
      * @var UploadedFile $file
      */
@@ -27,22 +31,32 @@ class Reviews
     private $status = 10;
 
     private $uploadImgPath = 'upload/';
-    private $defaultImgSrc = 'App/Asserts/img/default.jpg';
+    private $defaultImgSrc = '/App/Asserts/img/default.jpg';
 
+    /**
+     * Reviews constructor.
+     */
     public function __construct()
     {
         $this->db = Container::getContainer()->get('db');
     }
 
+    /**
+     * @param $id
+     * @return bool|mixed
+     */
     public function getReview($id)
     {
-        $id = (integer)$id;
         $sql = "SELECT review_id,review_name,review_email,
                        review_text,review_date,review_img,
-                       review_status,review_change FROM reviews
-                       WHERE review_id = $id;";
-        $res = $this->db->query($sql);
-        return $res->fetch(\PDO::FETCH_ASSOC);
+                       review_status,review_change
+                FROM reviews
+                WHERE review_id = :id;";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $res = $stmt->execute();
+        if (!$res) return false;
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
     /**
@@ -50,7 +64,10 @@ class Reviews
      */
     public function read()
     {
-        $sql = "SELECT review_id,review_name,review_email,review_text,review_date,review_img,review_status,review_change FROM reviews;";
+        $sql = "SELECT review_id,review_name,review_email,
+                       review_text,review_date,review_img,
+                       review_status,review_change
+                FROM reviews;";
         $res = $this->db->query($sql);
         return $res->fetchAll(\PDO::FETCH_ASSOC);
     }
@@ -60,9 +77,39 @@ class Reviews
      */
     public function addReview()
     {
-        if ($this->hasValidationError()) return false;
-        $img = $this->getImgSrc($this->file, $this->uploadImgPath, 320, 240, $this->defaultImgSrc);
+        if(!$this->file || $this->hasValidationError()) return false;
+        $img = $this->getImgSrc($this->file, $this->uploadImgPath, 320, 240);
+        if(!$img){$img = $this->defaultImgSrc;}
         return $this->create($this->name, $this->email, $this->review, $img, $this->status);
+    }
+
+    /**
+     * @return bool
+     */
+    public function changeReview()
+    {
+        if(!$this->id || !$this->file || $this->hasValidationError()) return false;
+        $img = $this->getImgSrc($this->file, $this->uploadImgPath, 320, 240);
+        if($img){
+            $sql = "UPDATE reviews SET review_name = :name,review_email = :email,
+                                       review_text = :text,review_img = :img,
+                                       review_change = :change
+                    WHERE review_id = :id";
+        }else{
+            $sql = "UPDATE reviews SET review_name = :name,review_email = :email,
+                                       review_text = :text,review_change = :change
+                    WHERE review_id = :id";
+        }
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':text', $this->review);
+        $stmt->bindParam(':change', $this->change);
+        $stmt->bindParam(':id', $this->id);
+        if($img){
+            $stmt->bindParam(':img', $img);
+        }
+        return $stmt->execute();
     }
 
     /**
@@ -129,10 +176,24 @@ class Reviews
      */
     public function loadDate(ServerRequestInterface $request)
     {
-        $this->name = trim($request->getParsedBody()['name']);
-        $this->email = trim($request->getParsedBody()['email']);
-        $this->review = trim($request->getParsedBody()['review']);
-        $this->file = $request->getUploadedFiles()['file'];
+        $user = $this->getUserAttributes($request);
+        $this->change = $user['userName'] ?? false;
+        $this->name = $request->getParsedBody()['name'] ?? false;
+        $this->email = $request->getParsedBody()['email'] ?? false;
+        $this->review = $request->getParsedBody()['review'] ?? false;
+        $this->id = $request->getParsedBody()['id'] ?? false;
+        $this->file = $request->getUploadedFiles()['file'] ?? false;
+        $this->processingDate();
+    }
+
+    /**
+     * data processing
+     */
+    private function processingDate()
+    {
+        $this->name = trim($this->name);
+        $this->email = trim($this->email);
+        $this->review = trim($this->review);
     }
 
 }

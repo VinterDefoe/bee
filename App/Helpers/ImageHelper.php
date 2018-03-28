@@ -11,20 +11,17 @@ trait ImageHelper
     use ValidationHelper;
 
     /**
-     * Move image and return Src
      * @param UploadedFile $file
      * @param $uploadPath
      * @param $maxWidth
      * @param $maxHeight
-     * @param $defaultImgSrc
-     * @return string
+     * @return bool|string
      */
-    private function getImgSrc(UploadedFile $file, $uploadPath, $maxWidth, $maxHeight, $defaultImgSrc)
+    private function getImgSrc(UploadedFile $file, $uploadPath, $maxWidth, $maxHeight)
     {
-        if (!$file->getSize()) {
-            return $defaultImgSrc;
-        }
+
         $file = $this->getImg($file, $maxWidth, $maxHeight);
+        if (!$file) {return false;}
         $extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
         $src = $uploadPath . uniqid() . '.' . $extension;
         $file->moveTo($src);
@@ -40,6 +37,7 @@ trait ImageHelper
      */
     private function getImg(UploadedFile $file, $maxWidth, $maxHeight)
     {
+        if (!$file->getSize()) {return false;}
         if (!$this->isValidImgMediaType($file)) return false;
         if (!$this->isValidImgSize($file)) return false;
 
