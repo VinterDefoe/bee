@@ -1,9 +1,9 @@
-{% extends 'Layout/layout.twig' %}
+{% extends './Layout/layout.twig' %}
 
 {% block title %} {{ title }} {% endblock %}
 
 {% block header %}
-    {% include 'Layout/header.twig' %}
+    {% include './Layout/header.twig' %}
 {% endblock %}
 
 {% block content %}
@@ -11,7 +11,7 @@
     {#Content#}
     <div class="row b-content">
         <div class="container">
-            <div class="row b-reviews">
+            <div class="row b-tasks">
                 <div class="col-12">
                     <div class="text-right b-sort">
                         <div class="b-sort-reviews-title"><b>Sort by:</b></div>
@@ -22,35 +22,44 @@
                         </div>
                     </div>
 
-                    {% for review in reviews %}
-                        {% if review.review_status == 9 %}
-                        <div class="row b-review">
-                            <div class="col-4 b-review-img text-center">
-                                <img src="{{ review.review_img }}" alt="">
+                    {% for task in tasks %}
+                            <div class="row b-task">
+                                <div class="col-4 b-task-img text-center">
+                                    <img src="{{ task.task_src }}" alt="">
+                                </div>
+                                <div class="col-8">
+                                    <div><b>Name: </b><span class="b-task-name">
+                                            {{ task.task_name }}
+                                        </span>
+                                    </div>
+                                    <div><b>Email: </b><span class="b-task-email">
+                                            {{ task.task_email }}
+                                        </span>
+                                    </div>
+                                    <div><b>Date: </b><span class="b-task-status">
+                                            {{ task.task_status }}
+                                        </span>
+                                    </div>
+                                    <div><span class="b-task-text">{{ task.task_text }}</span></div>
+                                </div>
                             </div>
-                            <div class="col-8">
-                                <div><b>Name: </b><span class="b-review-name">{{ review.review_name }}</span></div>
-                                <div><b>Email: </b><span class="b-review-email">{{ review.review_email }}</span></div>
-                                <div><b>Date: </b><span class="b-review-date">{{ review.review_date|date("Y-m-d") }}</span></div>
-                                <div><span class="b-review-review">{{ review.review_text }}</span></div>
-                                <div class="b-change-admin"><small>
-                                        {% if review.review_change %}
-                                        Change by {{ review.review_change }}
-                                        {% endif %}
-                                    </small></div>
-                            </div>
-                        </div>
-                        {% endif %}
                     {% endfor %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="b-pagination">
+
+                    </div>
                 </div>
             </div>
             <div class="row b-black-block">
                 <div class="col-12"></div>
             </div>
-            <div class="row justify-content-center b-reviews-form">
+            <div class="row justify-content-center b-task-form">
                 <div class="col-6">
-                    <h2 class="text-dark text-center">Add reviews form</h2>
-                    <form enctype="multipart/form-data" action="/" method="post"  novalidate>
+                    <h2 class="text-dark text-center">Add task</h2>
+                    <form enctype="multipart/form-data" action="" method="post"  novalidate>
 
                         <div class="form-row ">
                             <div class="col-12">
@@ -69,10 +78,10 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="review"></label>
-                                    <textarea placeholder="Review" name="review" id="review" cols="74" rows="4"></textarea>
+                                    <label for="task"></label>
+                                    <textarea placeholder="Task" name="task" id="task" cols="74" rows="4"></textarea>
                                     <div class="b-error">
-                                        {% if error.review %}{{ error.review }}{% endif %}
+                                        {% if error.text %}{{ error.text }}{% endif %}
                                     </div>
                                 </div>
                                 <small>jpg, png, gif</small>
@@ -83,7 +92,7 @@
                                         {% if error.img_error %}{{ error.img_error }}{% endif %}
                                     </div>
                                 </div>
-                                <div class="form-row justify-content-center b-reviews-form-btnblock">
+                                <div class="form-row justify-content-center b-task-form-btnblock">
                                     <div class="col-3">
                                         <div class="form-group text-right">
                                             <label for="preview"></label>
@@ -111,5 +120,5 @@
 {% endblock %}
 
 {% block footer %}
-    {% include 'Layout/footer.twig' %}
+    {% include './Layout/footer.twig' %}
 {% endblock %}

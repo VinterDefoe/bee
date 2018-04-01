@@ -3,16 +3,16 @@
 namespace App\Helpers;
 
 
-use Zend\Diactoros\UploadedFile;
+use Psr\Http\Message\UploadedFileInterface;
 
 trait ValidationHelper
 {
 	/**
-	 * @param UploadedFile $file
+	 * @param UploadedFileInterface $file
 	 * @param array $mediaType
 	 * @return bool
 	 */
-	public function isValidImgMediaType(UploadedFile $file, $mediaType = ['gif', 'png', 'jpeg'])
+	public function isValidImgMediaType(UploadedFileInterface $file, $mediaType = ['gif', 'png', 'jpeg'])
 	{
 		$mediaType = array_map(function ($element) {
 			return 'image/' . $element;
@@ -24,11 +24,11 @@ trait ValidationHelper
 	}
 
 	/**
-	 * @param UploadedFile $file
+	 * @param UploadedFileInterface $file
 	 * @param int $maxSize
 	 * @return bool
 	 */
-	public function isValidImgSize(UploadedFile $file,$maxSize = 1024000)
+	public function isValidImgSize(UploadedFileInterface $file, $maxSize = 1024000)
 	{
 		if ($file->getSize() > $maxSize) {
 			return false;
@@ -38,7 +38,7 @@ trait ValidationHelper
 
 	public function isValidEmail($email)
 	{
-        $pattern = "/@/";
-        return preg_match($pattern, $email) ? true : false;
-    }
+		$pattern = "/@/";
+		return preg_match($pattern, $email) ? true : false;
+	}
 }
