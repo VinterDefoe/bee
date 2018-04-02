@@ -1,10 +1,7 @@
 <?php
 
-use App\Controllers\Admin\ConfirmReviewController;
-use App\Controllers\Admin\DeclineReviewController;
-use App\Controllers\Admin\ReviewController;
-use App\Controllers\Admin\ReviewsController;
-use App\Controllers\IndexController;
+use App\Controllers\Admin\Tasks\TaskCloseController;
+use App\Controllers\Admin\Tasks\TaskController;
 use App\Controllers\LoginController;
 use App\Controllers\LogoutController;
 use App\Controllers\Tasks\TasksController;
@@ -25,7 +22,7 @@ use Zend\Diactoros\ServerRequestFactory;
 
 
 require_once "vendor/autoload.php";
-define('PATH', __DIR__);
+
 #Init
 $db = new PDO('sqlite:Db/app.db');
 $request = ServerRequestFactory::fromGlobals();
@@ -40,13 +37,13 @@ $container->add('db', $db);
 $container->add('templatePath', 'App/Views');
 
 #Routing
-
-$routeCollections->add(['GET', 'POST'], 'adminIndex', '^/admin/{id}', [PermissionMiddleware::class, ReviewController::class], ['id' => '\d+']);
-$routeCollections->get('admin_list', '^/admin/?', [PermissionMiddleware::class, ReviewsController::class]);
-$routeCollections->add(['GET', 'POST'], 'login', '^/login/', LoginController::class);
-$routeCollections->get('logout', '^/logout/', LogoutController::class);
-$routeCollections->add(['GET', 'POST'], 'tasks', '/{page}', TasksController::class, ['page' => '\d+']);
-$routeCollections->add(['GET', 'POST'], 'tasks_index', '/', TasksController::class);
+$routeCollections->get('task_close', '/admin/task/close/{id}', [PermissionMiddleware::class, TaskCloseController::class], ['id' => '\d+']);
+$routeCollections->add(['GET', 'POST'], 'admin_task', '/admin/task/{id}', [PermissionMiddleware::class, TaskController::class], ['id' => '\d+']);
+$routeCollections->get('admin_tasks', '/admin/tasks/{page}?', [PermissionMiddleware::class, \App\Controllers\Admin\Tasks\TasksController::class], ['page' => '\d+']);
+$routeCollections->add(['GET', 'POST'], 'login', '/login/', LoginController::class);
+$routeCollections->get('logout', '/logout/', LogoutController::class);
+$routeCollections->add(['GET', 'POST'], 'tasks_sort', '/{page}\\?{sort}?', TasksController::class, ['page' => '\d+']);
+$routeCollections->add(['GET', 'POST'], 'tasks', '/{page}?', TasksController::class);
 
 $router = new Router($routeCollections);
 

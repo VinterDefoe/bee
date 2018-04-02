@@ -2,66 +2,10 @@
 import "./scss/style.scss";
 import "bootstrap";
 
-// filter reviews
-$(function () {
-    /// Sort by name
-    $('.sort-name').on('click', function () {
-        tab($(this));
-        var reviews = $('.b-review');
-        var reviewsBlock = $('.b-reviews .col-12');
-        reviewsBlock.find('.b-review').remove();
-        reviews = sortByName(reviews,'b-review-name');
-        reviewsBlock.append(reviews);
-    });
-    // Sort by email
-    $('.sort-email').on('click',function () {
-        tab($(this));
-        var reviews = $('.b-review');
-        var reviewsBlock = $('.b-reviews .col-12');
-        reviewsBlock.find('.b-review').remove();
-        reviews = sortByName(reviews,'b-review-email');
-        reviewsBlock.append(reviews);
-    });
-    // Sort by date
-    $('.sort-date').on('click',function () {
-        tab($(this));
-        var reviews = $('.b-review');
-        var reviewsBlock = $('.b-reviews .col-12');
-        reviewsBlock.find('.b-review').remove();
-        reviews = sortByDate(reviews,'b-review-date');
-        reviewsBlock.append(reviews);
-    });
-    
-    function tab(element) {
-        element.addClass('btn-danger');
-        element.removeClass('btn-dark');
-        element.siblings().removeClass('btn-danger');
-        element.siblings().addClass('btn-dark');
-    }
-    
-    function sortByName(arr,valueClass) {
-        return arr.sort(function (a, b) {
-            var a = a.getElementsByClassName(valueClass)[0].textContent.toLowerCase();
-            var b = b.getElementsByClassName(valueClass)[0].textContent.toLowerCase();
-            if(a < b){return -1;}
-            if(a > b){return 1;}
-            return 0;
-        });
-    }
-
-    function sortByDate(arr,valueClass) {
-       return arr.sort(function (a, b) {
-           var a = a.getElementsByClassName(valueClass)[0].textContent;
-           var b = b.getElementsByClassName(valueClass)[0].textContent;
-            return new Date(b) - new Date(a);
-        });
-    }
-});
-
 // Preview and send
 $(function () {
-    var reviewBlock = $('.b-review:first').clone();
-    var forms = $('.b-reviews-form form');
+    var taskBlock = $('.b-task:first').clone();
+    var forms = $('.b-task-form form');
 
     forms.submit(function (event) {
         var res = validation(getDataFields());
@@ -74,12 +18,12 @@ $(function () {
         var data = getDataFields();
         var res = validation(data);
         if (res) {
-            var block = createReviewBlock(data);
-            var imgNode = block.find('.b-review-img');
+            var block = createTaskBlock(data);
+            var imgNode = block.find('.b-task-img');
             if (data.file.val()) {
                 getImg(data.file, imgNode);
             }
-            $('.b-reviews .col-12').append(block);
+            $('.b-preview-block .col-12').append(block);
         }
     });
 
@@ -121,11 +65,11 @@ $(function () {
                 validSuccess(data.email);
             }
         }
-        ////// review //////
-        if (validate.isEmpty(data.review.val())) {
-            valid = validError(data.review, 'Review can not be empty');
+        ////// task //////
+        if (validate.isEmpty(data.task.val())) {
+            valid = validError(data.task, 'Task can not be empty');
         } else {
-            validSuccess(data.review);
+            validSuccess(data.task);
         }
         //// file /////
         if (!validate.isEmpty(data.file.val())) {
@@ -155,30 +99,30 @@ $(function () {
         var data = [];
         data.name = forms.find('#name');
         data.email = forms.find('#email');
-        data.review = forms.find('#review');
+        data.task = forms.find('#task');
         data.file = forms.find('#file');
         return data;
     }
 
-    function createReviewBlock(data) {
+    function createTaskBlock(data) {
         var date = new Date();
         date = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
 
-        return reviewBlock
-            .find('.b-review-img img')
+        return taskBlock
+            .find('.b-task-img img')
             .remove()
             .end()
-            .find('.b-review-name')
+            .find('.b-task-name')
             .text(data.name.val())
             .end()
-            .find('.b-review-email')
+            .find('.b-task-email')
             .text(data.email.val())
             .end()
-            .find('.b-review-date')
+            .find('.b-task-date')
             .text(date)
             .end()
-            .find('.b-review-review')
-            .text(data.review.val())
+            .find('.b-task-text')
+            .text(data.task.val())
             .end();
     }
 

@@ -1,0 +1,48 @@
+{% extends './Layout/layout.twig' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block header %}
+    {% include './Layout/header.twig' %}
+{% endblock %}
+
+{% block content %}
+
+    {#Content#}
+    <div class="row b-content">
+        <div class="container">
+            <div class="row justify-content-center b-task-form">
+                <div class="col-6">
+                    <h2 class="text-dark text-center">Change text</h2>
+                    <form enctype="multipart/form-data" action="" method="post"  novalidate>
+
+                        <div class="form-row ">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="task"></label>
+                                    <textarea placeholder="Task" name="task" id="task" cols="74" rows="4">{{ task.task_text }}</textarea>
+                                </div>
+
+                                <div class="form-row justify-content-center b-task-form-btnblock">
+                                        <div class="form-group">
+                                            <input type="hidden" name="id" value = "{{ task.task_id }}">
+                                            <label for="send"></label>
+                                            <input type="submit" class="btn btn-dark" id="send" value="Send">
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {% include './Layout/footer.twig' %}
+{% endblock %}

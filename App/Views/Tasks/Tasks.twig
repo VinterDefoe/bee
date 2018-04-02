@@ -14,11 +14,16 @@
             <div class="row b-tasks">
                 <div class="col-12">
                     <div class="text-right b-sort">
-                        <div class="b-sort-reviews-title"><b>Sort by:</b></div>
-                        <div class="b-sort-reviews">
-                            <span class="btn-sm btn-dark sort-name">Name</span>
-                            <span class="btn-sm btn-dark sort-email">Email</span>
-                            <span class="btn-sm btn-dark sort-date">Date</span>
+                        <div class="dropdown show">
+                            <a class="btn-sm btn-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Sort by
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="?sort=name">Name</a>
+                                <a class="dropdown-item" href="?sort=email">Email</a>
+                                <a class="dropdown-item" href="?sort=status">Status</a>
+                            </div>
                         </div>
                     </div>
 
@@ -36,8 +41,9 @@
                                             {{ task.task_email }}
                                         </span>
                                     </div>
-                                    <div><b>Date: </b><span class="b-task-status">
-                                            {{ task.task_status }}
+                                    <div><b>Status: </b><span class="b-task-status">
+                                        {% if task.task_status == 1 %}Open task{% endif %}
+                                        {% if task .task_status == 2 %}Closed task{% endif %}
                                         </span>
                                     </div>
                                     <div><span class="b-task-text">{{ task.task_text }}</span></div>
@@ -46,20 +52,24 @@
                     {% endfor %}
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="b-pagination">
-
-                    </div>
-                </div>
-            </div>
             <div class="row b-black-block">
                 <div class="col-12"></div>
+            </div>
+            <div class="row b-pagination">
+                <div class="col-12">
+                        {{ pagination|raw }}
+                </div>
+            </div>
+
+            <div class="row b-preview-block">
+                <div class="col-12">
+
+                </div>
             </div>
             <div class="row justify-content-center b-task-form">
                 <div class="col-6">
                     <h2 class="text-dark text-center">Add task</h2>
-                    <form enctype="multipart/form-data" action="" method="post"  novalidate>
+                    <form enctype="multipart/form-data" action="/" method="post"  novalidate>
 
                         <div class="form-row ">
                             <div class="col-12">

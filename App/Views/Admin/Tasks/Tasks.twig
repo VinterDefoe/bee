@@ -1,0 +1,80 @@
+{% extends './Layout/layout.twig' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block header %}
+    {% include './Layout/header.twig' %}
+{% endblock %}
+
+{% block content %}
+
+    {#Content#}
+    <div class="row b-content">
+        <div class="container">
+            <div class="row b-tasks">
+                <div class="col-12">
+                    <div class="text-right b-sort">
+                        <div class="dropdown show">
+                            <a class="btn-sm btn-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Sort by
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="?sort=name">Name</a>
+                                <a class="dropdown-item" href="?sort=email">Email</a>
+                                <a class="dropdown-item" href="?sort=status">Status</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% for task in tasks %}
+                        <div class="row b-task">
+                            <div class="col-4 b-task-img text-center">
+                                <img src="{{ task.task_src }}" alt="">
+                            </div>
+                            <div class="col-8">
+                                <div class="b-task-action">
+                                     {% if task.task_status == 1 %}
+                                    <a href="/admin/task/close/{{ task.task_id }}">
+                                        <span class="btn-sm btn-dark">Close task</span>
+                                    </a>
+                                     {% endif %}
+                                    <a href="/admin/task/{{ task.task_id }}">
+                                        <span class="btn-sm btn-dark">Change text</span>
+                                    </a>
+                                </div>
+                                <div><b>Name: </b><span class="b-task-name">
+                                            {{ task.task_name }}
+                                        </span>
+                                </div>
+                                <div><b>Email: </b><span class="b-task-email">
+                                            {{ task.task_email }}
+                                        </span>
+                                </div>
+                                <div><b>Status: </b><span class="b-task-status">
+                                        {% if task.task_status == 1 %}Open task{% endif %}
+                                        {% if task.task_status == 2 %}Closed task{% endif %}
+                                        </span>
+                                </div>
+                                <div><span class="b-task-text">{{ task.task_text }}</span></div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row b-black-block">
+                <div class="col-12"></div>
+            </div>
+            <div class="row b-pagination">
+                <div class="col-12">
+                    {{ pagination|raw }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {% include './Layout/footer.twig' %}
+{% endblock %}
