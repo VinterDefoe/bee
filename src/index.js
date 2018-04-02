@@ -1,8 +1,9 @@
 //import _ from 'lodash';
+// import "lodash/lodash";
 import "./scss/style.scss";
-import "bootstrap";
+// import "popper.js/dist/umd/popper";
+import "bootstrap/dist/js/bootstrap.bundle";
 
-// Preview and send
 $(function () {
     var taskBlock = $('.b-task:first').clone();
     var forms = $('.b-task-form form');

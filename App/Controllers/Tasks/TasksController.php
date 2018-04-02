@@ -40,7 +40,7 @@ class TasksController extends TwigView
 		$page = $request->getAttribute('page');
 		if(!$page) {$page = 1;}
 		$tasks = $model->getTask($page, 3, $sort);
-		if(!$tasks){return $next($request);}
+//		/if(!$tasks){return $next($request);}
 		$pagination = $this->pagination($page, 3, $model->dataForPagination(), function ($page) use ($sort) {
 			return ($sort) ? '/' . $page . '?sort=' . $sort : '/' . $page;
 		});
